@@ -9,7 +9,7 @@ url="../"
   constructor(private http: HttpClient) { }
 
   getAllTasks() {
-    return this.http.get('/assets/AllProductsData.json');
+    return this.http.get('assets/AllProductsData.json');
   }
   updateTasks(id: any) {
     let data = { completed: true, }
