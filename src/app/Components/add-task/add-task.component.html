@@ -1,0 +1,101 @@
+<mat-toolbar color="primary">
+  <span class="fill-remaining-space">Add Product Delivery Details</span>
+</mat-toolbar>
+
+<div class="container" *ngIf="!post; else forminfo" novalidate>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form">
+    <div class="form-field">
+      <mat-form-field class="form-element-title">
+        <input matInput type="char" placeholder="Title" formControlName="title">
+        <mat-error *ngIf="!formGroup.controls['title'].valid && formGroup.controls['title'].touched">
+          {{ titleAlert }}
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+    <div class="form-field">
+      <mat-form-field class="form-element">
+        <input matInput placeholder="Price" id="priceField" formControlName="price" [maxLength]="4"
+          (keydown)="getTotalPrice('price')">
+        <!-- <mat-error *ngIf="!price.valid && price.touched">
+          {{ titleAlert }}
+        </mat-error> -->
+      </mat-form-field>
+      <mat-form-field class="form-element">
+        <mat-label>Quantity</mat-label>
+        <mat-select (selectionChange)="getTotalPrice($event)" formControlName="quantity">
+          <mat-option size="5" *ngFor="let id of options" [value]="id.value">
+            {{id.value}}</mat-option>
+        </mat-select>
+
+
+        <mat-error *ngIf="!formGroup.controls['quantity'].valid && formGroup.controls['quantity'].touched">
+          {{ titleAlert }}
+        </mat-error>
+      </mat-form-field>
+
+
+    </div>
+    <div class="form-field">
+      <mat-form-field class="form-element">
+        <input matInput placeholder="Total Price" formControlName="total">
+
+        <mat-error *ngIf="!formGroup.controls['total'].valid && formGroup.controls['total'].touched">
+          {{ titleAlert }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-element">
+        <input matInput id="percentageField" placeholder="Discount Percentage" (keydown)="getPercentage('$event')"
+          formControlName="discountPercentage">
+
+        <mat-error
+          *ngIf="!formGroup.controls['discountPercentage'].valid && formGroup.controls['discountPercentage'].touched">
+          {{ titleAlert }}
+        </mat-error>
+      </mat-form-field>
+
+
+    </div>
+    <div class="form-field">
+      <mat-form-field class="form-element">
+        <input matInput placeholder="Discounted Price" formControlName="discountedPrice">
+
+        <mat-error
+          *ngIf="!formGroup.controls['discountedPrice'].valid && formGroup.controls['discountedPrice'].touched">
+          {{ titleAlert }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="form-element">
+
+
+        <mat-label>Delivery Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option size="5" *ngFor="let id of delivertStatus" [value]="id.id">{{id.value}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="!formGroup.controls['status'].valid && formGroup.controls['status'].touched">
+          {{ titleAlert }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-action-buttons">
+      <div class="form-element-button" mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close color="primary" type="submit" class="button"
+          [disabled]="!formGroup.valid">Save
+        </button>
+      </div>
+      <!-- <div class="form-element-button" mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close>Close</button>
+      </div> -->
+      <div class="form-element-button" mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close color="primary" class="button">Close
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-template #forminfo>
+  <div class="container">
+    {{ post | json }}
+  </div>
+</ng-template>

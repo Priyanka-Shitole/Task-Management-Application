@@ -1,0 +1,89 @@
+<div class="filter-section">
+    <div class="filter-button-section">
+        <button mat-raised-button [ngClass]="{'active': status=='All'} " (click)="filterData('All')">All</button>
+        <button mat-raised-button [ngClass]="{'active': status=='completed'} "
+            (click)="filterData('completed')">Completed</button>
+        <button mat-raised-button [ngClass]="{'active': status=='incomplete'} "
+            (click)="filterData('incomplete')">Incomplete</button>
+    </div>
+    <div class="add-button-section">
+        <button mat-raised-button color="primary" (click)="openAddProductDialog()">Add file</button>
+    </div>
+</div>
+<div class="table-section">
+    <table mat-table [dataSource]="productData" matSort (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z8">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by title">
+                Title
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by price">
+                Price
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell class="text-align-center" *matHeaderCellDef mat-sort-header
+                sortActionDescription="Sort by quantity">
+                Quantity
+            </th>
+            <td mat-cell *matCellDef="let element" class="text-align-center"> {{element.quantity}} </td>
+        </ng-container>
+        <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by total">
+                Total Price
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+        </ng-container>
+        <ng-container matColumnDef="discountPercentage">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by discountPercentage">
+                Discount Percentage
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.discountPercentage}} </td>
+        </ng-container>
+        <ng-container matColumnDef="discountedPrice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by discountedPrice">
+                Discounted Price
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.discountedPrice}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by status">
+                Delivery Status
+            </th>
+            <td mat-cell *matCellDef="let element"> {{element.status | titlecase}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="customColumn1">
+            <th mat-header-cell *matHeaderCellDef class="text-align-center"> Action</th>
+
+            <td mat-cell *matCellDef="let element" class="text-align-right">
+                <mat-spinner *ngIf="showloader && (element.id==taskId)" strokeWidth="3" [diameter]="30"></mat-spinner>
+                <mat-icon
+                    [ngClass]="{'incomplete': element.status=='incomplete','completed': element.status=='completed'} "
+                    [matTooltip]="element.status=='incomplete' ? 'Mark as completed' : ''"
+                    (click)="element.status=='incomplete' ? updateTask(element.id):''">
+                    check_circle
+                </mat-icon>
+                <mat-icon matTooltip="Delete Task" class="delete" (click)="deleteTask(element.id)">delete</mat-icon>
+
+            </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
